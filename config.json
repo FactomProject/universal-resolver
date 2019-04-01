@@ -78,6 +78,17 @@
 			"image": "hacera/hacera-did-driver",
 			"tag": "latest",
 			"testIdentifiers": [ "did:hcr:0f674e7e-4b49-4898-85f6-96176c1e30de" ]
-        }
+        }, {
+			"pattern": "^(did:factom:.+)$",
+			"image": "factominc/driver-did-factom",
+			"tag": "latest",
+			"testIdentifiers": [ "did:factom:12a6ea22a3a838247b5ea2f0381b97fb3a6b2114a8b4da369387481d806106b2" ],
+			"env": {
+				"uniresolver_driver_did_factom_factomConnection": "harmony_connect",
+				"uniresolver_driver_did_factom_rpcUrlMainnet": "https://api.factomd.net",
+				"uniresolver_driver_did_factom_rpcUrlTestnet": "http://localhost:8088",
+				"uniresolver_driver_did_factom_harmonyConnectApi": "https://api.factom.com/v1"
+			}
+		},
 	]
 }

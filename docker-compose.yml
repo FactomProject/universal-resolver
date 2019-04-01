@@ -57,7 +57,16 @@ services:
     image: hacera/hacera-did-driver:latest
     ports:
       - "8089:8080"
+  driver-did-factom:
+    image: factominc/driver-did-factom:latest
+    environment:
+      uniresolver_driver_did_factom_factomConnection: ${uniresolver_driver_did_factom_factomConnection}
+      uniresolver_driver_did_factom_rpcUrlMainnet: ${uniresolver_driver_did_factom_rpcUrlMainnet}
+      uniresolver_driver_did_factom_rpcUrlTestnet: ${uniresolver_driver_did_factom_rpcUrlTestnet}
+      uniresolver_driver_did_factom_harmonyConnectApi: ${uniresolver_driver_did_factom_harmonyConnectApi}
+    ports:
+      - "8090:8080"
   uni-resolver-web:
-    image: universalresolver/uni-resolver-web:latest
+    image: universalresolver/uni-resolver-web:test
     ports:
       - "8080:8080"
