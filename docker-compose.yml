@@ -63,7 +63,11 @@ services:
       uniresolver_driver_did_factom_factomConnection: ${uniresolver_driver_did_factom_factomConnection}
       uniresolver_driver_did_factom_rpcUrlMainnet: ${uniresolver_driver_did_factom_rpcUrlMainnet}
       uniresolver_driver_did_factom_rpcUrlTestnet: ${uniresolver_driver_did_factom_rpcUrlTestnet}
-      uniresolver_driver_did_factom_harmonyConnectApi: ${uniresolver_driver_did_factom_harmonyConnectApi}
+      uniresolver_driver_did_factom_tfaExplorerApiUrlMainnet: ${uniresolver_driver_did_factom_tfaExplorerApiUrlMainnet}
+      uniresolver_driver_did_factom_tfaExplorerApiUrlTestnet: ${uniresolver_driver_did_factom_tfaExplorerApiUrlTestnet}
+      uniresolver_driver_did_factom_harmonyApiUrl: ${uniresolver_driver_did_factom_harmonyApiUrl}
+      uniresolver_driver_did_factom_harmonyApiAppId: ${uniresolver_driver_did_factom_harmonyApiAppId}
+      uniresolver_driver_did_factom_harmonyApiAppKey: ${uniresolver_driver_did_factom_harmonyApiAppKey}
     ports:
       - "8090:8080"
   uni-resolver-web:
