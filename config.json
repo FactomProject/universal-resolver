@@ -84,14 +84,15 @@
 			"tag": "latest",
 			"testIdentifiers": [ "did:factom:4862d0ab02495cd0d114de43c2479644132290867bb1f46c06c37e6ce5ba7037" ],
 			"env": {
-				"uniresolver_driver_did_factom_factomConnection": "tfa_explorer",
+				"uniresolver_driver_did_factom_factomConnection": "factomd",
 				"uniresolver_driver_did_factom_rpcUrlMainnet": "https://api.factomd.net",
 				"uniresolver_driver_did_factom_rpcUrlTestnet": "https://dev.factomd.net",
 				"uniresolver_driver_did_factom_tfaExplorerApiUrlMainnet": "https://explorer.factoid.org/api/v1",
 				"uniresolver_driver_did_factom_tfaExplorerApiUrlTestnet": "https://testnet.factoid.org/api/v1",
 				"uniresolver_driver_did_factom_harmonyApiUrl": "https://api.factom.com/v1",
 				"uniresolver_driver_did_factom_harmonyApiAppId": "APP_ID",
-				"uniresolver_driver_did_factom_harmonyApiAppKey": "APP_KEY"
+				"uniresolver_driver_did_factom_harmonyApiAppKey": "APP_KEY",
+				"uniresolver_driver_did_factom_harmonyApiCachingEnabled": "false"
 			}
 		}
 	]

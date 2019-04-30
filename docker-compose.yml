@@ -68,6 +68,7 @@ services:
       uniresolver_driver_did_factom_harmonyApiUrl: ${uniresolver_driver_did_factom_harmonyApiUrl}
       uniresolver_driver_did_factom_harmonyApiAppId: ${uniresolver_driver_did_factom_harmonyApiAppId}
       uniresolver_driver_did_factom_harmonyApiAppKey: ${uniresolver_driver_did_factom_harmonyApiAppKey}
+      uniresolver_driver_did_factom_harmonyApiCachingEnabled: ${uniresolver_driver_did_factom_harmonyApiCachingEnabled}
     ports:
       - "8090:8080"
   uni-resolver-web:
