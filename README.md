@@ -12,7 +12,7 @@ See https://uniresolver.io/ for a publicly hosted instance of a Universal Resolv
 
 You can deploy the Universal Resolver on your local machine by cloning this Github repository, and using `docker-compose` to build and run the Universal Resolver as well as its drivers:
 
-	git clone https://github.com/decentralized-identity/universal-resolver
+	git clone https://github.com/FactomProject/universal-resolver
 	cd universal-resolver/
 	docker-compose -f docker-compose.yml pull
 	docker-compose -f docker-compose.yml up
