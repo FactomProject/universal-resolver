@@ -27,6 +27,8 @@ import uniresolver.result.ResolveResult;
 
 public class HttpDriver implements Driver {
 
+	public static final String MIME_TYPES = ResolveResult.MIME_TYPE + "," + DIDDocument.MIME_TYPE + "," + "application/ld+json";
+
 	private static Logger log = LoggerFactory.getLogger(HttpDriver.class);
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -109,7 +111,7 @@ public class HttpDriver implements Driver {
 		}
 
 		HttpGet httpGet = new HttpGet(URI.create(uriString));
-		httpGet.addHeader("Accept", ResolveResult.MIME_TYPE);
+		httpGet.addHeader("Accept", MIME_TYPES);
 
 		// execute HTTP request
 
@@ -143,6 +145,7 @@ public class HttpDriver implements Driver {
 				resolveResult = ResolveResult.fromJson(httpBody);
 			} catch (Exception ex) {
 
+				if (log.isWarnEnabled()) log.warn("No RESOLVE RESULT. Maybe DID DOCUMENT: " + httpBody + " (" + ex.getMessage());
 				resolveResult = ResolveResult.build(DIDDocument.fromJson(httpBody));
 			}
 		} catch (IOException ex) {
@@ -174,8 +177,15 @@ public class HttpDriver implements Driver {
 
 		// remote properties
 
-		Map<String, Object> remoteProperties = this.remoteProperties();
-		if (remoteProperties != null) properties.putAll(remoteProperties);
+		try {
+
+			Map<String, Object> remoteProperties = this.remoteProperties();
+			if (remoteProperties != null) properties.putAll(remoteProperties);
+		} catch (Exception ex) {
+
+			if (log.isWarnEnabled()) log.warn("Cannot retrieve remote properties: " + ex.getMessage(), ex);
+			properties.put("remotePropertiesException", ex.getMessage());
+		}
 
 		// done
 

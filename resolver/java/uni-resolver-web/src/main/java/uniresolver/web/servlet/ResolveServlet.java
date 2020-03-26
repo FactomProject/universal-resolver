@@ -1,7 +1,6 @@
 package uniresolver.web.servlet;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uniresolver.ResolutionException;
+import did.DIDDocument;
 import uniresolver.result.ResolveResult;
 import uniresolver.web.WebUniResolver;
 
@@ -41,9 +40,11 @@ public class ResolveServlet extends WebUniResolver {
 		try {
 
 			identifier = URLDecoder.decode(identifier, "UTF-8");
-		} catch (UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 
-			throw new IOException(ex.getMessage(), ex);
+			if (log.isWarnEnabled()) log.warn("Request problem: " + ex.getMessage(), ex);
+			WebUniResolver.sendResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null, "Request problem: " + ex.getMessage());
+			return;
 		}
 
 		if (log.isInfoEnabled()) log.info("Incoming resolve request for identifier: " + identifier);
@@ -57,31 +58,41 @@ public class ResolveServlet extends WebUniResolver {
 		// execute the request
 
 		ResolveResult resolveResult;
-		String resolveResultString;
 
 		try {
 
 			resolveResult = this.resolve(identifier);
-			resolveResultString = resolveResult == null ? null : resolveResult.toJson();
-		} catch (ResolutionException ex) {
+		} catch (Exception ex) {
 
 			if (log.isWarnEnabled()) log.warn("Resolve problem for " + identifier + ": " + ex.getMessage(), ex);
 			WebUniResolver.sendResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null, "Resolve problem for " + identifier + ": " + ex.getMessage());
 			return;
 		}
 
-		if (log.isInfoEnabled()) log.info("Resolve result for " + identifier + ": " + resolveResultString);
+		if (log.isInfoEnabled()) log.info("Resolve result for " + identifier + ": " + resolveResult.toJson());
 
 		// no resolve result?
 
-		if (resolveResultString == null) {
+		if (resolveResult == null || (resolveResult.getDidDocument() == null && resolveResult.getContent() == null)) {
 
-			WebUniResolver.sendResponse(response, HttpServletResponse.SC_NOT_FOUND, null, "No resolve result for " + identifier + ".");
+			WebUniResolver.sendResponse(response, HttpServletResponse.SC_NOT_FOUND, null, resolveResult.toJson());
 			return;
 		}
 
 		// write resolve result
 
-		WebUniResolver.sendResponse(response, HttpServletResponse.SC_OK, MIME_TYPE, resolveResultString);
+		if (request.getHeader("Accept").contains(DIDDocument.MIME_TYPE) && resolveResult.getDidDocument() != null) {
+
+			WebUniResolver.sendResponse(response, HttpServletResponse.SC_OK, DIDDocument.MIME_TYPE, resolveResult.getDidDocument().toJson());
+			return;
+		} else if (resolveResult.getContent() != null) {
+
+			WebUniResolver.sendResponse(response, HttpServletResponse.SC_OK, resolveResult.getContentType(), resolveResult.getContent());
+			return;
+		} else {
+
+			WebUniResolver.sendResponse(response, HttpServletResponse.SC_OK, ResolveResult.MIME_TYPE, resolveResult.toJson());
+			return;
+		}
 	}
 }
