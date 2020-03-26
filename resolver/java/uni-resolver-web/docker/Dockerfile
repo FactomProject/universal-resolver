@@ -1,23 +1,28 @@
 # Dockerfile for universalresolver/uni-resolver-web
 
-FROM universalresolver/base
+FROM maven:3-jdk-8
 MAINTAINER Markus Sabadello <markus@danubetech.com>
+
+USER root
+
+# build dependencies
+
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -DrepoUrl=https://repo.maven.apache.org/maven2 -Dartifact=org.eclipse.jetty:jetty-maven-plugin:9.4.18.v20190429
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -DrepoUrl=https://repo.maven.apache.org/maven2 -Dartifact=org.apache.maven.plugins:maven-war-plugin:3.2.2
 
 # build uni-resolver-web
 
-ADD . /opt/uni-resolver-java
+ADD ./resolver/java/ /opt/uni-resolver-java
+ADD ./config.json /opt/uni-resolver-java/uni-resolver-web/
 
-RUN cd /opt/uni-resolver-java && mvn clean
-RUN cd /opt/uni-resolver-java && mvn install -N -DskipTests
-RUN cd /opt/uni-resolver-java/uni-resolver-core && mvn install -N -DskipTests
-RUN cd /opt/uni-resolver-java/driver && mvn install -N -DskipTests
-RUN cd /opt/uni-resolver-java/driver-http && mvn install -N -DskipTests
-RUN cd /opt/uni-resolver-java/uni-resolver-local && mvn install -N -DskipTests
-RUN cd /opt/uni-resolver-java/uni-resolver-web && mvn install -N -DskipTests
+RUN cd /opt/uni-resolver-java && mvn --settings /opt/uni-resolver-java/settings.xml clean install -N -DskipTests && mvn clean && \
+    cd /opt/uni-resolver-java/uni-resolver-core && mvn --settings /opt/uni-resolver-java/settings.xml clean install -N -DskipTests && mvn clean && \
+    cd /opt/uni-resolver-java/driver && mvn --settings /opt/uni-resolver-java/settings.xml clean install -N -DskipTests && mvn clean && \
+    cd /opt/uni-resolver-java/driver-http && mvn --settings /opt/uni-resolver-java/settings.xml clean install -N -DskipTests && mvn clean && \
+    cd /opt/uni-resolver-java/uni-resolver-local && mvn --settings /opt/uni-resolver-java/settings.xml clean install -N -DskipTests && mvn clean && \
+    cd /opt/uni-resolver-java/uni-resolver-web && mvn --settings /opt/uni-resolver-java/settings.xml clean install package -N -DskipTests
 
 # done
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 8080
 

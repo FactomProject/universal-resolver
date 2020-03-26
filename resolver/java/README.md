@@ -1,22 +1,20 @@
-![DIF Logo](https://raw.githubusercontent.com/decentralized-identity/decentralized-identity.github.io/master/images/logo-small.png)
-
-# Universal Resolver - Java Implementation
+# Universal Resolver — Java Components
 
 This is a Java implementation of a Universal Resolver. See [universal-resolver](https://github.com/decentralized-identity/universal-resolver/) for a general introduction to Universal Resolvers and drivers.
 
-See this [blog post](https://medium.com/decentralized-identity/a-universal-resolver-for-self-sovereign-identifiers-48e6b4a5cc3c) for an introduction.
-
-See https://uniresolver.io/ for a publicly hosted instance of a Universal Resolver.
+## Configuration
+For downloading the dependencies of this project a Personal Access Token for GitHub must be configured in file [resolver/java/settings.xml](https://github.com/decentralized-identity/universal-resolver/blob/master/resolver/java/settings.xml), according to [Creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line). Only the scope **read:packages** is required.
 
 ## Build (native Java)
 
-Run:
+Maven build:
 
-	mvn clean install
+	cd resolver/java
+	mvn --settings settings.xml clean install
 
 ## Local Resolver
 
-You can use a [Local Resolver](https://github.com/decentralized-identity/universal-resolver-java/tree/master/uni-resolver-client) in your Java project that invokes drivers locally (either directly via their JAVA API or via a Docker REST API).
+You can use a [Local Resolver](https://github.com/decentralized-identity/universal-resolver/tree/master/resolver/java/uni-resolver-client) in your Java project that invokes drivers locally (either directly via their JAVA API or via a Docker REST API).
 
 Dependency:
 
@@ -26,7 +24,7 @@ Dependency:
 		<version>0.1-SNAPSHOT</version>
 	</dependency>
 
-[Example Use](https://github.com/decentralized-identity/universal-resolver-java/blob/master/examples/src/main/java/uniresolver/examples/TestLocalUniResolver.java):
+[Example Use](https://github.com/decentralized-identity/universal-resolver/blob/master/resolver/java/examples/src/main/java/uniresolver/examples/TestLocalUniResolver.java):
 
 	LocalUniResolver uniResolver = LocalUniResolver.getDefault();
 	uniResolver.getDriver(DidSovDriver.class).setLibIndyPath("./sovrin/lib/");
@@ -45,9 +43,9 @@ Dependency:
 
 ## Web Resolver
 
-You can deploy a [Web Resolver](https://github.com/decentralized-identity/universal-resolver-java/tree/master/uni-resolver-web) that can be called by clients and invokes drivers locally (either directly via their JAVA API or via a Docker REST API).
+You can deploy a [Web Resolver](https://github.com/decentralized-identity/universal-resolver/tree/master/resolver/java/uni-resolver-web) that can be called by clients and invokes drivers locally (either directly via their JAVA API or via a Docker REST API).
 
-See the [Example Configuration](https://github.com/decentralized-identity/universal-resolver-java/blob/master/uni-resolver-web/src/main/webapp/WEB-INF/applicationContext.xml).
+See the [Example Configuration](https://github.com/decentralized-identity/universal-resolver/blob/master/resolver/java/uni-resolver-web/src/main/webapp/WEB-INF/applicationContext.xml).
 
 How to run:
 
@@ -55,7 +53,7 @@ How to run:
 
 ## Client Resolver
 
-You can use a [Client Resolver](https://github.com/decentralized-identity/universal-resolver-java/tree/master/uni-resolver-client) in your Java project that calls a remote Web Resolver.
+You can use a [Client Resolver](https://github.com/decentralized-identity/universal-resolver/tree/master/resolver/java/uni-resolver-client) in your Java project that calls a remote Web Resolver.
 
 Dependency:
 
@@ -65,7 +63,7 @@ Dependency:
 		<version>0.1-SNAPSHOT</version>
 	</dependency>
 
-[Example Use](https://github.com/decentralized-identity/universal-resolver-java/blob/master/examples/src/main/java/uniresolver/examples/TestClientUniResolver.java):
+[Example Use](https://github.com/decentralized-identity/universal-resolver/blob/master/resolver/java/examples/src/main/java/uniresolver/examples/TestClientUniResolver.java):
 
 	ClientUniResolver uniResolver = new ClientUniResolver();
 	uniResolver.setResolveUri("https://uniresolver.danubetech.com/1.0/identifiers/");
